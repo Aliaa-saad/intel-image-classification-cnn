@@ -140,3 +140,56 @@ python -m src.quality_checks
 The cleaning step must be completed before CNN training.
 
 Exact duplicate hashes across the final splits: 0.
+
+## Automatic Dataset Setup
+
+The Intel Image Classification dataset can be downloaded
+and prepared automatically using KaggleHub.
+
+### Install Dependencies
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+### Download and Prepare Dataset
+
+```bash
+python -m src.setup_dataset
+```
+
+This command will:
+
+1. Download the public dataset from Kaggle if not already available.
+2. Organize the training and testing folders.
+3. Run dataset cleaning and deduplication if needed.
+4. Prepare the cleaned dataset for CNN training.
+
+Existing valid dataset folders will be reused.
+
+An internet connection is required for the initial download.
+Kaggle authentication may be required if Kaggle requests access
+or consent.
+
+### Verify the Pipeline
+
+```bash
+python -m src.explore
+python -m src.check_pipeline
+python -m src.quality_checks
+```
+
+### Load Datasets for Model Training
+
+```python
+from src.preprocessing import load_datasets
+
+train_ds, val_ds, test_ds, class_names = load_datasets()
+```
+
+Input image shape: (128, 128, 3)
+
+Number of classes: 6
+
+Training images are augmented and normalized.
+Validation and testing images are normalized without augmentation.
