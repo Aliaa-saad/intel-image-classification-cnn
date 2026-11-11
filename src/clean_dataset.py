@@ -101,12 +101,14 @@ def clean_dataset():
 
             continue
 
-        # Prefer the training split for overlapping images.
-        # Make selection deterministic.
+
+        # Preserve test images when the same image exists
+        # in both training and testing sets.
+        # Keep the selection deterministic.
         records = sorted(
             records,
             key=lambda item: (
-                0 if item["split"] == "train" else 1,
+                0 if item["split"] == "test" else 1,
                 str(item["path"]),
             ),
         )
@@ -118,6 +120,7 @@ def clean_dataset():
             if selected["split"] == "train"
             else CLEAN_TEST
         )
+
 
         destination = (
             destination_root
